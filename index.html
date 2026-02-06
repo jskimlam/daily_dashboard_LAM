@@ -65,19 +65,10 @@
         .image-card {
             background: var(--card-white);
             border: 2px solid var(--main-black);
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border-radius: 8px;
             text-align: center;
-        }
-
-        .image-card h2 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            text-align: left;
-            border-left: 5px solid var(--point-orange);
-            padding-left: 15px;
-            color: var(--main-black);
         }
 
         .latest-image {
@@ -87,24 +78,28 @@
             border: 1px solid #ddd;
         }
 
-        /* 푸터 및 안내 문구 */
+        /* 푸터 및 라이선스 영역 */
         .footer-info {
             margin-top: 40px;
             text-align: center;
-            color: #666;
+            color: #444;
+        }
+
+        .license-tag {
+            font-weight: 700;
+            color: var(--main-black);
+            margin-bottom: 8px;
+            font-size: 1rem;
         }
 
         .copyright {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
         }
 
-        /* 요청하신 노트북LM 문구 (작고 연하게) */
         .disclaimer {
             font-size: 0.75rem;
             color: var(--text-muted);
-            letter-spacing: -0.2px;
         }
 
         @media (max-width: 600px) {
@@ -125,12 +120,12 @@
 
         <main>
             <div class="image-card">
-                <h2>대산 씨텍 포트 클로징 및 현황 분석</h2>
                 <img src="images/latest.webp" alt="Latest Market Briefing" class="latest-image" id="briefingImage">
             </div>
         </main>
 
         <footer class="footer-info">
+            <p class="license-tag">Created by JS Kim of Lam</p>
             <p class="copyright">© 2026 Lotte Chemical Advanced Materials. All rights reserved.</p>
             <p class="disclaimer">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
         </footer>
