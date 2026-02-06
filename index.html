@@ -12,6 +12,7 @@
             --bg-gray: #f4f4f7;
             --card-white: #ffffff;
             --text-muted: #888888;
+            --notice-bg: #fff9f0; /* 알림용 연한 주황 배경 */
         }
 
         * {
@@ -48,7 +49,6 @@
             text-transform: uppercase;
         }
 
-        /* BI 배지 스타일 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
@@ -68,7 +68,20 @@
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border-radius: 8px;
-            text-align: center;
+        }
+
+        /* 강조된 AI 안내 문구 스타일 */
+        .ai-alert-bar {
+            background-color: var(--notice-bg);
+            border-left: 5px solid var(--point-orange);
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #d35400; /* 짙은 주황색으로 시인성 확보 */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .latest-image {
@@ -105,6 +118,7 @@
         @media (max-width: 600px) {
             .main-title { font-size: 2rem; }
             .dept-badge { font-size: 1rem; }
+            .ai-alert-bar { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -120,6 +134,10 @@
 
         <main>
             <div class="image-card">
+                <div class="ai-alert-bar">
+                    <span>📢</span> 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.
+                </div>
+                
                 <img src="images/latest.webp" alt="Latest Market Briefing" class="latest-image" id="briefingImage">
             </div>
         </main>
