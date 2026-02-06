@@ -1,1 +1,33 @@
-name: Optimize Market Image on: push: paths: - 'images/latest.png' jobs: build: runs-on: ubuntu-latest steps: - name: Checkout repository uses: actions/checkout@v3 - name: Set up Python uses: actions/setup-python@v4 with: python-version: '3.9' - name: Install dependencies run: pip install Pillow - name: Run image script run: python image.py - name: Commit and Push results run: | git config --global user.name "github-actions[bot]" git config --global user.email "github-actions[bot]@https://www.google.com/url?sa=E&source=gmail&q=users.noreply.github.com" git add images/latest.webp git commit -m "Auto-optimize image to webp" || exit 0 git push
+name: Optimize Market Image
+
+on:
+  push:
+    paths:
+      - 'images/latest.png'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install Pillow
+
+      - name: Run image script
+        run: python image.py
+
+      - name: Commit and Push results
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add images/latest.webp
+          git commit -m "Auto-optimize image to webp" || exit 0
+          git push
