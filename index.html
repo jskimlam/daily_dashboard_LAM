@@ -11,8 +11,7 @@
             --main-black: #000000;
             --bg-gray: #f4f4f7;
             --card-white: #ffffff;
-            --text-muted: #888888;
-            --notice-bg: #fff9f0; /* 알림용 연한 주황 배경 */
+            --text-muted: #777777;
         }
 
         * {
@@ -34,10 +33,10 @@
             margin: 0 auto;
         }
 
-        /* 헤더 섹션 */
+        /* 헤더 섹션 디자인 */
         .dashboard-header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .main-title {
@@ -45,7 +44,7 @@
             font-weight: 900;
             letter-spacing: -2px;
             color: var(--main-black);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-transform: uppercase;
         }
 
@@ -58,30 +57,35 @@
             padding: 10px 25px;
             border: 3px solid var(--main-black);
             box-shadow: 6px 6px 0px var(--main-black);
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        /* 메인 카드 */
+        /* 안내 문구 그룹화 (한번에 볼 수 있게) */
+        .notice-group {
+            margin-bottom: 20px;
+        }
+
+        .ai-notice {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #d35400; /* 강조를 위한 짙은 주황색 */
+            margin-bottom: 5px;
+        }
+
+        .typo-notice {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* 메인 카드 레이아웃 */
         .image-card {
             background: var(--card-white);
             border: 2px solid var(--main-black);
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             border-radius: 8px;
-        }
-
-        /* 강조된 AI 안내 문구 스타일 */
-        .ai-alert-bar {
-            background-color: var(--notice-bg);
-            border-left: 5px solid var(--point-orange);
-            padding: 15px 20px;
-            margin-bottom: 25px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #d35400; /* 짙은 주황색으로 시인성 확보 */
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-align: center;
         }
 
         .latest-image {
@@ -93,9 +97,10 @@
 
         /* 푸터 및 라이선스 영역 */
         .footer-info {
-            margin-top: 40px;
+            margin-top: 50px;
             text-align: center;
             color: #444;
+            padding-bottom: 20px;
         }
 
         .license-tag {
@@ -107,18 +112,12 @@
 
         .copyright {
             font-size: 0.85rem;
-            margin-bottom: 4px;
-        }
-
-        .disclaimer {
-            font-size: 0.75rem;
-            color: var(--text-muted);
         }
 
         @media (max-width: 600px) {
             .main-title { font-size: 2rem; }
             .dept-badge { font-size: 1rem; }
-            .ai-alert-bar { font-size: 0.9rem; }
+            .ai-notice { font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -130,14 +129,15 @@
             <div class="dept-badge">
                 [롯데케미칼 첨단소재 구매부문]
             </div>
+            
+            <div class="notice-group">
+                <p class="ai-notice">📢 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.</p>
+                <p class="typo-notice">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
+            </div>
         </header>
 
         <main>
             <div class="image-card">
-                <div class="ai-alert-bar">
-                    <span>📢</span> 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.
-                </div>
-                
                 <img src="images/latest.webp" alt="Latest Market Briefing" class="latest-image" id="briefingImage">
             </div>
         </main>
@@ -145,11 +145,11 @@
         <footer class="footer-info">
             <p class="license-tag">Created by JS Kim of Lam</p>
             <p class="copyright">© 2026 Lotte Chemical Advanced Materials. All rights reserved.</p>
-            <p class="disclaimer">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
         </footer>
     </div>
 
     <script>
+        // 최신 이미지를 즉시 반영하기 위한 캐시 방지 스크립트
         window.onload = function() {
             var img = document.getElementById('briefingImage');
             if (img) {
