@@ -10,7 +10,7 @@
             --point-orange: #ff8c00;
             --main-black: #000000;
             --bg-gray: #f4f4f7;
-            --security-red: #d93025; /* 보안 강조용 레드 */
+            --security-red: #d93025;
             --text-gray: #777777;
         }
 
@@ -33,12 +33,11 @@
             text-align: center;
         }
 
-        /* 1. 상단 보안 문구 스타일 */
         .security-header {
             color: var(--security-red);
             font-weight: 900;
             font-size: 1.1rem;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             letter-spacing: 1px;
         }
 
@@ -71,21 +70,47 @@
             font-size: 0.85rem;
         }
 
+        /* 이미지 카드 및 확대 관련 스타일 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
             padding: 10px;
             border-radius: 8px;
+            position: relative;
+            overflow: hidden; /* 확대 시 영역 밖으로 나가는 것 방지 */
+        }
+
+        .img-container {
+            position: relative;
+            cursor: zoom-in; /* 돋보기 아이콘 표시 */
+            overflow: auto;
+            max-height: 62vh;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 65vh;
             object-fit: contain;
+            transition: transform 0.3s ease; /* 부드러운 확대 효과 */
         }
 
-        /* 2. 데이터 하단 출처 정보 스타일 */
+        /* 확대되었을 때 적용될 클래스 */
+        .img-container.zoomed {
+            cursor: zoom-out;
+            max-height: 75vh;
+        }
+
+        .img-container.zoomed #mainImg {
+            transform: scale(1.8); /* 1.8배 확대 */
+            transform-origin: center center;
+        }
+
+        .zoom-hint {
+            font-size: 0.7rem;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
         .data-source {
             text-align: right;
             font-size: 0.75rem;
@@ -94,7 +119,7 @@
             font-style: italic;
         }
 
-        .license-area {
+        .footer-area {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -104,12 +129,13 @@
         .license { font-weight: 800; font-size: 0.85rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
-        /* 모바일 대응 */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; padding: 20px 10px; display: block; }
-            #mainImg { max-height: none; }
-            .license-area { flex-direction: column; gap: 5px; }
+            .img-container { max-height: none; cursor: default; }
+            .img-container.zoomed #mainImg { transform: none; }
+            .footer-area { flex-direction: column; gap: 5px; }
             .data-source { text-align: center; }
+            .zoom-hint { display: none; }
         }
     </style>
 </head>
@@ -131,18 +157,23 @@
             </select>
         </header>
 
+        <p class="zoom-hint">※ PC에서 이미지를 클릭하면 크게 확대됩니다.</p>
+        
         <main class="card">
-            <img src="images/latest.webp" id="mainImg">
+            <div class="img-container" id="imgContainer" onclick="toggleZoom(event)">
+                <img src="images/latest.webp" id="mainImg">
+            </div>
             <div class="data-source">Source: Platts / ICIS Commentary (AI Summarized)</div>
         </main>
 
-        <footer class="license-area">
+        <footer class="footer-area">
             <div class="license">Created by JS Kim of Lam</div>
             <div class="copyright">© 2026 Lotte Chemical Advanced Materials.</div>
         </footer>
     </div>
 
     <script>
+        // 아카이브 목록 로드
         fetch('images/list.json')
             .then(res => res.json())
             .then(data => {
@@ -155,10 +186,28 @@
                 });
             }).catch(() => {});
 
+        // 이미지 확대/축소 토글 함수
+        function toggleZoom(e) {
+            const container = document.getElementById('imgContainer');
+            container.classList.toggle('zoomed');
+            
+            // 확대 시 마우스 위치로 스크롤 이동 (선택 사항)
+            if (container.classList.contains('zoomed')) {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                container.scrollTo(x, y);
+            }
+        }
+
+        // 이미지 변경 및 캐시 방지
         function changeImage(src) {
             const img = document.getElementById('mainImg');
+            const container = document.getElementById('imgContainer');
+            container.classList.remove('zoomed'); // 이미지 변경 시 확대 해제
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
         }
+        
         window.onload = function() { changeImage('images/latest.webp'); };
     </script>
 </body>
