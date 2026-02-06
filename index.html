@@ -21,30 +21,35 @@
             font-family: 'Pretendard', -apple-system, sans-serif;
         }
 
+        /* 스크롤 방지를 위한 바디 설정 */
         body {
             background-color: var(--bg-gray);
             color: #333;
-            line-height: 1.6;
-            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* 화면 높이에 맞춤 */
+            padding: 10px;
+            overflow: hidden; /* 스크롤바 제거 */
         }
 
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 900px;
+            text-align: center;
         }
 
-        /* 헤더 섹션 디자인 */
+        /* 상단 헤더: 간격 최소화 */
         .dashboard-header {
-            text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 15px;
         }
 
         .main-title {
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: 900;
-            letter-spacing: -2px;
+            letter-spacing: -1.5px;
             color: var(--main-black);
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
@@ -53,71 +58,68 @@
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 1.2rem;
-            padding: 10px 25px;
-            border: 3px solid var(--main-black);
-            box-shadow: 6px 6px 0px var(--main-black);
-            margin-bottom: 20px;
+            font-size: 1.1rem;
+            padding: 6px 20px;
+            border: 2px solid var(--main-black);
+            box-shadow: 4px 4px 0px var(--main-black);
+            margin-bottom: 12px;
         }
 
-        /* 안내 문구 그룹화 (한번에 볼 수 있게) */
+        /* 안내 문구 그룹: 한곳에 집중 */
         .notice-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .ai-notice {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: #d35400; /* 강조를 위한 짙은 주황색 */
-            margin-bottom: 5px;
+            color: #d35400;
+            margin-bottom: 2px;
         }
 
         .typo-notice {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            font-weight: 500;
         }
 
-        /* 메인 카드 레이아웃 */
+        /* 메인 카드 및 이미지 */
         .image-card {
             background: var(--card-white);
             border: 2px solid var(--main-black);
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             border-radius: 8px;
-            text-align: center;
+            display: inline-block;
+            width: 100%;
         }
 
         .latest-image {
             width: 100%;
-            height: auto;
+            max-height: 60vh; /* 이미지 높이를 화면의 60%로 제한하여 스크롤 방지 */
+            object-fit: contain;
             border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        /* 푸터 및 라이선스 영역 */
-        .footer-info {
-            margin-top: 50px;
-            text-align: center;
-            color: #444;
-            padding-bottom: 20px;
-        }
-
-        .license-tag {
-            font-weight: 700;
-            color: var(--main-black);
+            border: 1px solid #eee;
             margin-bottom: 8px;
-            font-size: 1rem;
+        }
+
+        /* 라이선스 문구: 이미지 바로 아래 밀착 */
+        .license-tag {
+            font-weight: 800;
+            color: var(--main-black);
+            font-size: 0.95rem;
+            margin-top: 5px;
         }
 
         .copyright {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 2px;
         }
 
-        @media (max-width: 600px) {
-            .main-title { font-size: 2rem; }
-            .dept-badge { font-size: 1rem; }
-            .ai-notice { font-size: 0.95rem; }
+        /* 모바일 대응 */
+        @media (max-height: 700px) {
+            .main-title { font-size: 1.8rem; }
+            .latest-image { max-height: 50vh; }
         }
     </style>
 </head>
@@ -126,6 +128,7 @@
     <div class="container">
         <header class="dashboard-header">
             <h1 class="main-title">DAILY MARKET BRIEFING</h1>
+            
             <div class="dept-badge">
                 [롯데케미칼 첨단소재 구매부문]
             </div>
@@ -139,17 +142,14 @@
         <main>
             <div class="image-card">
                 <img src="images/latest.webp" alt="Latest Market Briefing" class="latest-image" id="briefingImage">
+                
+                <p class="license-tag">Created by JS Kim of Lam</p>
+                <p class="copyright">© 2026 Lotte Chemical Advanced Materials. All rights reserved.</p>
             </div>
         </main>
-
-        <footer class="footer-info">
-            <p class="license-tag">Created by JS Kim of Lam</p>
-            <p class="copyright">© 2026 Lotte Chemical Advanced Materials. All rights reserved.</p>
-        </footer>
     </div>
 
     <script>
-        // 최신 이미지를 즉시 반영하기 위한 캐시 방지 스크립트
         window.onload = function() {
             var img = document.getElementById('briefingImage');
             if (img) {
