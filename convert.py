@@ -1,6 +1,7 @@
 import os
 import glob
 import shutil
+import json
 from datetime import datetime
 from PIL import Image
 
@@ -11,27 +12,27 @@ def process_and_archive():
     if not os.path.exists(archive_dir):
         os.makedirs(archive_dir)
 
-    # 1. images 폴더 내 모든 png 파일 검색
+    # 1. 새로운 PNG 파일 찾기
     image_files = glob.glob(f'{source_dir}/*.png')
-    if not image_files:
-        print("새로운 PNG 파일이 없습니다.")
-        return
+    if image_files:
+        latest_source = max(image_files, key=os.path.getmtime)
+        
+        # WebP 변환 (최신본 업데이트)
+        with Image.open(latest_source) as img:
+            img.save(f'{source_dir}/latest.webp', 'WEBP', quality=80)
+        
+        # 원본 이동 (날짜 포함)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        file_name = os.path.basename(latest_source)
+        archive_name = f"{timestamp}_{file_name}"
+        shutil.move(latest_source, os.path.join(archive_dir, archive_name))
 
-    # 2. 가장 최근에 업로드된 파일 선정
-    latest_source = max(image_files, key=os.path.getmtime)
-    
-    # 3. WebP 변환 (파일명은 항상 latest.webp로 고정)
-    output_webp = f'{source_dir}/latest.webp'
-    with Image.open(latest_source) as img:
-        img.save(output_webp, 'WEBP', quality=80)
-    
-    # 4. 원본 파일 아카이브 (이름 앞에 날짜를 붙여 중복 방지)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_name = os.path.basename(latest_source)
-    archive_name = f"{timestamp}_{file_name}"
-    
-    shutil.move(latest_source, os.path.join(archive_dir, archive_name))
-    print(f"완료: {archive_name} 아카이브 및 latest.webp 업데이트")
+    # 2. 아카이브 폴더 내 모든 파일 목록 생성 (웹페이지용)
+    archive_list = sorted(os.listdir(archive_dir), reverse=True) # 최신순 정렬
+    with open(f'{source_dir}/list.json', 'w', encoding='utf-8') as f:
+        json.dump(archive_list, f, ensure_ascii=False, indent=4)
+        
+    print("목록 갱신 완료!")
 
 if __name__ == "__main__":
     process_and_archive()
