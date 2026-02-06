@@ -2,26 +2,148 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Market Briefing Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Market Briefing - Lotte Chemical</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 900px; width: 100%; }
-        h1 { color: #333; text-align: center; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .update-time { text-align: right; color: #666; font-size: 0.9em; margin-bottom: 20px; }
-        .report-img { width: 100%; border-radius: 10px; border: 1px solid #ddd; }
-        .footer { margin-top: 20px; color: #888; font-size: 0.8em; }
+        :root {
+            --point-orange: #ff8c00;
+            --main-black: #000000;
+            --bg-gray: #f4f4f7;
+            --card-white: #ffffff;
+            --text-muted: #888888;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-gray);
+            color: #333;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* 헤더 섹션 */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            color: var(--main-black);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* BI 배지 스타일 */
+        .dept-badge {
+            display: inline-block;
+            background-color: var(--point-orange);
+            color: var(--main-black);
+            font-weight: 800;
+            font-size: 1.2rem;
+            padding: 10px 25px;
+            border: 3px solid var(--main-black);
+            box-shadow: 6px 6px 0px var(--main-black);
+            margin-bottom: 10px;
+        }
+
+        /* 메인 카드 */
+        .image-card {
+            background: var(--card-white);
+            border: 2px solid var(--main-black);
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .image-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            text-align: left;
+            border-left: 5px solid var(--point-orange);
+            padding-left: 15px;
+            color: var(--main-black);
+        }
+
+        .latest-image {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+        /* 푸터 및 안내 문구 */
+        .footer-info {
+            margin-top: 40px;
+            text-align: center;
+            color: #666;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        /* 요청하신 노트북LM 문구 (작고 연하게) */
+        .disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: -0.2px;
+        }
+
+        @media (max-width: 600px) {
+            .main-title { font-size: 2rem; }
+            .dept-badge { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>📈 Daily Market Briefing</h1>
-        <div class="update-time">Last Update: 2026-02-06</div>
-        
-        <img src="./images/latest.webp" alt="Today's Market Report" class="report-img">
-        
-        <div class="footer">
-            Created by JS KIM | Data source: Market Analysis Team
-        </div>
+        <header class="dashboard-header">
+            <h1 class="main-title">DAILY MARKET BRIEFING</h1>
+            <div class="dept-badge">
+                [롯데케미칼 첨단소재 구매부문]
+            </div>
+        </header>
+
+        <main>
+            <div class="image-card">
+                <h2>대산 씨텍 포트 클로징 및 현황 분석</h2>
+                <img src="images/latest.webp" alt="Latest Market Briefing" class="latest-image" id="briefingImage">
+            </div>
+        </main>
+
+        <footer class="footer-info">
+            <p class="copyright">© 2026 Lotte Chemical Advanced Materials. All rights reserved.</p>
+            <p class="disclaimer">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
+        </footer>
     </div>
+
+    <script>
+        window.onload = function() {
+            var img = document.getElementById('briefingImage');
+            if (img) {
+                img.src = img.src + '?t=' + new Date().getTime();
+            }
+        };
+    </script>
+
 </body>
 </html>
