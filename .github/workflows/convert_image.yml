@@ -3,7 +3,8 @@ name: Auto Convert and Archive
 on:
   push:
     paths:
-      - 'images/*.png' # 어떤 이름의 PNG가 올라와도 실행
+      - 'images/*.png'
+  workflow_dispatch:      # 이 줄을 추가하면 버튼이 생깁니다!
 
 jobs:
   build:
