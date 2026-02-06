@@ -1,36 +1,26 @@
-name: Convert PNG to WebP
+name: Auto Convert and Archive
 
 on:
   push:
     paths:
-      - 'latest.png'       # latest.png가 업데이트될 때만 실행
-      - 'images/latest.png' # 혹은 이 경로일 때 실행
-  workflow_dispatch:       # 수동으로도 실행 가능하게 설정
+      - 'images/*.png' # 어떤 이름의 PNG가 올라와도 실행
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write      # 파일을 다시 커밋하기 위한 권한
-
+      contents: write # 파일 생성 및 이동 권한
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Install dependencies
-        run: pip install Pillow
-
-      - name: Run script
-        run: python convert.py # 파이썬 파일 이름이 convert.py라고 가정
-
-      - name: Commit and Push
+      - run: pip install Pillow
+      - run: python convert.py
+      - name: Commit changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-convert latest.png to webp" && git push)
+          git commit -m "Auto-update latest.webp and archive original" || exit 0
+          git push
