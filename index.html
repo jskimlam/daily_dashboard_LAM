@@ -16,6 +16,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
+        /* 기본 설정: PC (스크롤 없이 한 화면 고정) */
         body {
             background-color: var(--bg-gray);
             display: flex;
@@ -33,6 +34,7 @@
             text-align: center;
         }
 
+        /* 상단 보안 강조 */
         .security-header {
             color: var(--security-red);
             font-weight: 900;
@@ -44,6 +46,7 @@
         .dashboard-header { margin-bottom: 5px; }
         .main-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
         
+        /* 부서 정보 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
@@ -56,9 +59,9 @@
             margin-bottom: 8px;
         }
 
-        .notice-group { margin-bottom: 5px; }
-        .ai-notice { font-size: 0.9rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
-        .typo-notice { font-size: 0.75rem; color: var(--text-gray); }
+        .notice-group { margin-bottom: 8px; }
+        .ai-notice { font-size: 0.95rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
+        .typo-notice { font-size: 0.8rem; color: var(--text-gray); }
 
         .archive-select {
             margin-bottom: 10px;
@@ -66,51 +69,37 @@
             border: 2px solid var(--main-black);
             font-weight: bold;
             width: 100%;
-            max-width: 300px;
+            max-width: 350px;
             font-size: 0.85rem;
         }
 
-        /* 이미지 카드 및 확대 관련 스타일 */
+        /* 이미지 카드 영역 (확대 기능 제거됨) */
         .card {
             background: white;
             border: 2px solid var(--main-black);
             padding: 10px;
             border-radius: 8px;
             position: relative;
-            overflow: hidden; /* 확대 시 영역 밖으로 나가는 것 방지 */
         }
 
-        .img-container {
-            position: relative;
-            cursor: zoom-in; /* 돋보기 아이콘 표시 */
-            overflow: auto;
-            max-height: 62vh;
+        .img-display {
+            width: 100%;
+            max-height: 65vh; /* PC 화면에서 적절한 높이 유지 */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fafafa;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
+            max-height: 65vh;
             object-fit: contain;
-            transition: transform 0.3s ease; /* 부드러운 확대 효과 */
         }
 
-        /* 확대되었을 때 적용될 클래스 */
-        .img-container.zoomed {
-            cursor: zoom-out;
-            max-height: 75vh;
-        }
-
-        .img-container.zoomed #mainImg {
-            transform: scale(1.8); /* 1.8배 확대 */
-            transform-origin: center center;
-        }
-
-        .zoom-hint {
-            font-size: 0.7rem;
-            color: #999;
-            margin-bottom: 5px;
-        }
-
+        /* 출처 고지 */
         .data-source {
             text-align: right;
             font-size: 0.75rem;
@@ -124,18 +113,18 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         .license { font-weight: 800; font-size: 0.85rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
+        /* 📱 모바일 환경 최적화 */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; padding: 20px 10px; display: block; }
-            .img-container { max-height: none; cursor: default; }
-            .img-container.zoomed #mainImg { transform: none; }
+            .img-display { max-height: none; display: block; }
+            #mainImg { max-height: none; }
             .footer-area { flex-direction: column; gap: 5px; }
             .data-source { text-align: center; }
-            .zoom-hint { display: none; }
         }
     </style>
 </head>
@@ -156,11 +145,9 @@
                 <option value="images/latest.webp">★ 최신 시황 보기 ★</option>
             </select>
         </header>
-
-        <p class="zoom-hint">※ PC에서 이미지를 클릭하면 크게 확대됩니다.</p>
         
         <main class="card">
-            <div class="img-container" id="imgContainer" onclick="toggleZoom(event)">
+            <div class="img-display">
                 <img src="images/latest.webp" id="mainImg">
             </div>
             <div class="data-source">Source: Platts / ICIS Commentary (AI Summarized)</div>
@@ -173,7 +160,7 @@
     </div>
 
     <script>
-        // 아카이브 목록 로드
+        // 아카이브 목록 불러오기
         fetch('images/list.json')
             .then(res => res.json())
             .then(data => {
@@ -186,25 +173,9 @@
                 });
             }).catch(() => {});
 
-        // 이미지 확대/축소 토글 함수
-        function toggleZoom(e) {
-            const container = document.getElementById('imgContainer');
-            container.classList.toggle('zoomed');
-            
-            // 확대 시 마우스 위치로 스크롤 이동 (선택 사항)
-            if (container.classList.contains('zoomed')) {
-                const rect = container.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                container.scrollTo(x, y);
-            }
-        }
-
         // 이미지 변경 및 캐시 방지
         function changeImage(src) {
             const img = document.getElementById('mainImg');
-            const container = document.getElementById('imgContainer');
-            container.classList.remove('zoomed'); // 이미지 변경 시 확대 해제
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
         }
         
