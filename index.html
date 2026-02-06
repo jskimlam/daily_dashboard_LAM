@@ -10,11 +10,12 @@
             --point-orange: #ff8c00;
             --main-black: #000000;
             --bg-gray: #f4f4f7;
+            --security-red: #d93025; /* 보안 강조용 레드 */
+            --text-gray: #777777;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* 기본 설정: 데스크톱 (스크롤 없음) */
         body {
             background-color: var(--bg-gray);
             display: flex;
@@ -23,7 +24,7 @@
             justify-content: center;
             min-height: 100vh;
             padding: 10px;
-            overflow: hidden; /* 데스크톱은 고정 */
+            overflow: hidden;
         }
 
         .container {
@@ -32,7 +33,16 @@
             text-align: center;
         }
 
-        .dashboard-header { margin-bottom: 10px; }
+        /* 1. 상단 보안 문구 스타일 */
+        .security-header {
+            color: var(--security-red);
+            font-weight: 900;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .dashboard-header { margin-bottom: 5px; }
         .main-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
         
         .dept-badge {
@@ -40,17 +50,16 @@
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 4px 15px;
             border: 2px solid var(--main-black);
             box-shadow: 3px 3px 0px var(--main-black);
             margin-bottom: 8px;
         }
 
-        .notice-group { margin-bottom: 8px; }
-        /* 폰트 크기 조절 위치 */
-        .ai-notice { font-size: 1rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
-        .typo-notice { font-size: 0.8rem; color: #777; }
+        .notice-group { margin-bottom: 5px; }
+        .ai-notice { font-size: 0.9rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
+        .typo-notice { font-size: 0.75rem; color: var(--text-gray); }
 
         .archive-select {
             margin-bottom: 10px;
@@ -59,20 +68,30 @@
             font-weight: bold;
             width: 100%;
             max-width: 300px;
+            font-size: 0.85rem;
         }
 
         .card {
             background: white;
             border: 2px solid var(--main-black);
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 70vh; /* 데스크톱 이미지 높이 제한 */
+            max-height: 65vh;
             object-fit: contain;
+        }
+
+        /* 2. 데이터 하단 출처 정보 스타일 */
+        .data-source {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-top: 5px;
+            font-style: italic;
         }
 
         .license-area {
@@ -80,33 +99,24 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
-        .license { font-weight: 800; font-size: 0.9rem; }
+        .license { font-weight: 800; font-size: 0.85rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
-        /* 📱 모바일 환경 전용 설정 (화면 너비 768px 이하) */
+        /* 모바일 대응 */
         @media (max-width: 768px) {
-            body {
-                overflow-y: auto; /* 세로 스크롤 허용 */
-                height: auto;
-                padding: 20px 10px;
-                display: block; /* 중앙 정렬 해제하여 자연스러운 스크롤 유도 */
-            }
-            .main-title { font-size: 1.5rem; }
-            #mainImg {
-                max-height: none; /* 이미지 높이 제한 해제하여 크게 보기 */
-                margin-bottom: 10px;
-            }
-            .license-area {
-                flex-direction: column; /* 라이선스 문구 세로 정렬 */
-                gap: 5px;
-            }
+            body { overflow-y: auto; height: auto; padding: 20px 10px; display: block; }
+            #mainImg { max-height: none; }
+            .license-area { flex-direction: column; gap: 5px; }
+            .data-source { text-align: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="security-header">사내 보안/복제 및 배포 금지</div>
+
         <header class="dashboard-header">
             <h1 class="main-title">DAILY MARKET BRIEFING</h1>
             <div class="dept-badge">[롯데케미칼 첨단소재 구매부문]</div>
@@ -123,11 +133,13 @@
 
         <main class="card">
             <img src="images/latest.webp" id="mainImg">
-            <div class="license-area">
-                <div class="license">Created by JS Kim of Lam</div>
-                <div class="copyright">© 2026 Lotte Chemical Advanced Materials.</div>
-            </div>
+            <div class="data-source">Source: Platts / ICIS Commentary (AI Summarized)</div>
         </main>
+
+        <footer class="license-area">
+            <div class="license">Created by JS Kim of Lam</div>
+            <div class="copyright">© 2026 Lotte Chemical Advanced Materials.</div>
+        </footer>
     </div>
 
     <script>
