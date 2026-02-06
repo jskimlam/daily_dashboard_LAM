@@ -10,38 +10,31 @@
             --point-orange: #ff8c00;
             --main-black: #000000;
             --bg-gray: #f4f4f7;
-            --card-white: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
+        /* 기본 설정: 데스크톱 (스크롤 없음) */
         body {
             background-color: var(--bg-gray);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* 화면 높이 전체 사용 */
+            min-height: 100vh;
             padding: 10px;
-            overflow: hidden; /* 스크롤 절대 방지 */
+            overflow: hidden; /* 데스크톱은 고정 */
         }
 
         .container {
-            width: 98%; /* 좌우 폭을 더 넓게 사용 */
-            max-width: 1400px; /* 최대 가로폭 확장 */
+            width: 98%;
+            max-width: 1400px;
             text-align: center;
         }
 
-        /* 헤더 섹션: 더 컴팩트하게 조절 */
         .dashboard-header { margin-bottom: 10px; }
-
-        .main-title {
-            font-size: 1.8rem; /* 타이틀 크기 소폭 축소로 이미지 공간 확보 */
-            font-weight: 900;
-            letter-spacing: -1px;
-            margin-bottom: 5px;
-        }
-
+        .main-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+        
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
@@ -54,11 +47,11 @@
             margin-bottom: 8px;
         }
 
-        .notice-group { margin-bottom: 10px; }
+        .notice-group { margin-bottom: 8px; }
+        /* 폰트 크기 조절 위치 */
         .ai-notice { font-size: 1rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
-        .typo-notice { font-size: 0.9rem; color: #777; }
+        .typo-notice { font-size: 0.8rem; color: #777; }
 
-        /* 아카이브 선택창 */
         .archive-select {
             margin-bottom: 10px;
             padding: 4px;
@@ -66,24 +59,20 @@
             font-weight: bold;
             width: 100%;
             max-width: 300px;
-            font-size: 0.85rem;
         }
 
-        /* 이미지 카드 영역: 크기 최대화 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
             padding: 8px;
             border-radius: 8px;
-            position: relative;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 72vh; /* 이미지 높이를 화면의 72%까지 확장 */
-            object-fit: contain; /* 이미지 비율 유지하며 꽉 채움 */
-            background: #fafafa;
+            max-height: 70vh; /* 데스크톱 이미지 높이 제한 */
+            object-fit: contain;
         }
 
         .license-area {
@@ -93,14 +82,26 @@
             gap: 15px;
             margin-top: 8px;
         }
-
-        .license { font-weight: 800; font-size: 0.9rem; color: var(--main-black); }
+        .license { font-weight: 800; font-size: 0.9rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
-        /* 작은 화면 대응 */
-        @media (max-height: 800px) {
+        /* 📱 모바일 환경 전용 설정 (화면 너비 768px 이하) */
+        @media (max-width: 768px) {
+            body {
+                overflow-y: auto; /* 세로 스크롤 허용 */
+                height: auto;
+                padding: 20px 10px;
+                display: block; /* 중앙 정렬 해제하여 자연스러운 스크롤 유도 */
+            }
             .main-title { font-size: 1.5rem; }
-            #mainImg { max-height: 65vh; }
+            #mainImg {
+                max-height: none; /* 이미지 높이 제한 해제하여 크게 보기 */
+                margin-bottom: 10px;
+            }
+            .license-area {
+                flex-direction: column; /* 라이선스 문구 세로 정렬 */
+                gap: 5px;
+            }
         }
     </style>
 </head>
@@ -130,7 +131,6 @@
     </div>
 
     <script>
-        // 아카이브 목록 로드
         fetch('images/list.json')
             .then(res => res.json())
             .then(data => {
@@ -143,13 +143,10 @@
                 });
             }).catch(() => {});
 
-        // 이미지 전환 및 캐시 방지
         function changeImage(src) {
             const img = document.getElementById('mainImg');
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
         }
-        
-        // 페이지 로드 시 최신 이미지 갱신
         window.onload = function() { changeImage('images/latest.webp'); };
     </script>
 </body>
