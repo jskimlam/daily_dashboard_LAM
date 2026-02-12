@@ -16,13 +16,12 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* [PC 전용 설정] */
+        /* [PC 모드 설정] */
         body {
             background-color: var(--bg-gray);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             height: 100vh;
             padding: 10px;
             overflow: hidden;
@@ -30,46 +29,47 @@
 
         .container {
             width: 100%;
-            max-width: 1100px; 
+            max-width: 1200px; 
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
-        /* 1열: 제목 단독 중앙 배치 */
+        /* 1열: 제목 (항상 정중앙) */
         .title-row {
             width: 100%;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
         .main-title { 
             font-size: 2.2rem; 
             font-weight: 900; 
-            letter-spacing: -1px; 
-            color: var(--main-black);
+            letter-spacing: -1px;
         }
 
-        /* 2열: 중앙 기준 좌우 분할 영역 */
+        /* 2열: 중앙으로 모으는 좌우 분할 영역 */
         .sub-header-row {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 12px 20px;
+            justify-content: center; /* 핵심: 양 끝이 아닌 가운데로 모음 */
+            gap: 80px; /* 좌우 영역 사이의 간격을 적절히 유지 */
+            width: 100%;
+            padding: 12px 0;
             margin-bottom: 10px;
             background: rgba(255,255,255,0.7);
             border-radius: 12px;
             border: 1px solid #ddd;
         }
 
-        /* 왼쪽: 보안 문구 + 부서 배지 */
-        .header-left { text-align: left; flex: 1; }
+        .header-left { text-align: right; flex: 1; max-width: 400px; }
+        .header-right { text-align: left; flex: 1; max-width: 400px; }
+
         .security-header {
             color: var(--security-red);
             font-weight: 900;
             font-size: 0.95rem;
             margin-bottom: 5px;
-            letter-spacing: 0.5px;
         }
+        /* [롯데케미칼 첨단소재 구매부문] 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
@@ -81,20 +81,20 @@
             box-shadow: 2px 2px 0px var(--main-black);
         }
 
-        /* 오른쪽: AI 안내 + 아카이브 선택 */
-        .header-right { text-align: right; flex: 1; }
         .ai-notice { font-size: 0.85rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
         .typo-notice { font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px; }
+        
         .archive-select {
             padding: 4px;
             border: 2px solid var(--main-black);
             font-weight: bold;
-            width: 260px;
+            width: 100%;
+            max-width: 260px;
             font-size: 0.85rem;
             cursor: pointer;
         }
 
-        /* 메인 데이터 영역 */
+        /* 메인 데이터 영역 (NotebookLM 마스킹 포함) */
         .card {
             background: white;
             border: 2px solid var(--main-black);
@@ -104,7 +104,6 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .img-mask {
@@ -114,7 +113,6 @@
             background: #fafafa;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
         }
 
         #mainImg {
@@ -122,9 +120,10 @@
             height: auto;
             max-height: 100%;
             object-fit: contain;
-            margin-bottom: -45px; /* NotebookLM 가리기 */
+            margin-bottom: -48px; /* NotebookLM 워터마크 가리기 */
         }
 
+        /* 출처: Source: Platts / ICIS Commentary (AI Summarized) */
         .data-source {
             text-align: right;
             font-size: 0.7rem;
@@ -141,24 +140,21 @@
             padding: 8px 0;
         }
 
-        /* [모바일 전용 설정] */
+        /* [모바일 대응] */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; display: block; padding: 15px 10px; }
-            .container { width: 100%; max-width: none; }
-            .main-title { font-size: 1.8rem; }
+            .container { width: 100%; }
             .sub-header-row { 
                 flex-direction: column; 
                 align-items: center; 
-                text-align: center; 
+                gap: 15px; 
                 background: none; 
                 border: none; 
-                padding: 0; 
             }
-            .header-left, .header-right { text-align: center; margin-bottom: 12px; flex: none; width: 100%; }
-            .archive-select { width: 100%; max-width: 350px; }
-            .img-mask { max-height: none; overflow: visible; }
+            .header-left, .header-right { text-align: center; max-width: none; }
+            .archive-select { max-width: 100%; }
+            .img-mask { overflow: visible; }
             #mainImg { margin-bottom: 0; }
-            .footer-area { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
@@ -199,23 +195,20 @@
     </div>
 
     <script>
-        fetch('images/list.json')
-            .then(res => res.json())
-            .then(data => {
-                const dropdown = document.getElementById('archiveDropdown');
-                data.forEach(file => {
-                    const opt = document.createElement('option');
-                    opt.value = 'images/archive/' + file;
-                    opt.textContent = '기록: ' + file;
-                    dropdown.appendChild(opt);
-                });
-            }).catch(() => {});
+        fetch('images/list.json').then(res => res.json()).then(data => {
+            const dropdown = document.getElementById('archiveDropdown');
+            data.forEach(file => {
+                const opt = document.createElement('option');
+                opt.value = 'images/archive/' + file;
+                opt.textContent = '기록: ' + file;
+                dropdown.appendChild(opt);
+            });
+        });
 
         function changeImage(src) {
             const img = document.getElementById('mainImg');
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
         }
-        
         window.onload = function() { changeImage('images/latest.webp'); };
     </script>
 </body>
