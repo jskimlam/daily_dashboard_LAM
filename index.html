@@ -16,7 +16,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* PC 기본: 스크롤 없는 한 화면 고정 */
+        /* PC 기본: 스크롤 없는 한 화면 중앙 집중형 */
         body {
             background-color: var(--bg-gray);
             display: flex;
@@ -29,56 +29,64 @@
         }
 
         .container {
-            width: 98%;
-            max-width: 1600px;
+            width: 95%;
+            max-width: 1200px; /* 가로폭을 제한하여 가운데로 모음 */
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
-        /* --- PC 모드: 헤더 좌우 분할 구성 --- */
-        .pc-header-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 5px 15px;
-            margin-bottom: 5px;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .header-left { text-align: left; flex: 1; }
-        .header-right { text-align: right; flex: 1; }
-
+        /* --- 상단 보안 문구 (전체 중앙) --- */
         .security-header {
             color: var(--security-red);
             font-weight: 900;
             font-size: 0.95rem;
-            margin-bottom: 3px;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
-        .main-title { font-size: 1.7rem; font-weight: 900; line-height: 1.2; }
+        /* --- PC 모드: 헤더 좌우 분할하되 폭을 좁혀 중앙 집중 --- */
+        .pc-header-wrapper {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr; /* 제목 영역을 약간 더 넓게 */
+            gap: 30px;
+            align-items: flex-end;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .header-left { text-align: left; }
+        .header-right { text-align: right; }
+
+        .main-title { font-size: 1.6rem; font-weight: 900; line-height: 1.1; margin-bottom: 4px; }
         
+        /* 롯데케미칼 첨단소재 구매부문 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             padding: 3px 12px;
             border: 2px solid var(--main-black);
             box-shadow: 2px 2px 0px var(--main-black);
-            margin-top: 5px;
         }
 
         .ai-notice { font-size: 0.85rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
-        .typo-notice { font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px; }
+        .typo-notice { font-size: 0.75rem; color: var(--text-gray); margin-bottom: 6px; }
 
         .archive-select {
             padding: 4px;
             border: 2px solid var(--main-black);
             font-weight: bold;
-            width: 280px;
+            width: 100%;
+            max-width: 280px;
             font-size: 0.85rem;
+            cursor: pointer;
         }
 
         /* --- 이미지 카드 영역 --- */
@@ -87,10 +95,11 @@
             border: 2px solid var(--main-black);
             padding: 10px;
             border-radius: 8px;
-            flex: 1; /* 남은 공간 모두 사용 */
+            flex: 1; 
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .img-mask {
@@ -112,11 +121,12 @@
             margin-bottom: -45px; 
         }
 
+        /* 출처 정보 고지 */
         .data-source {
             text-align: right;
             font-size: 0.7rem;
             color: var(--text-gray);
-            margin-top: 3px;
+            margin-top: 4px;
             font-style: italic;
         }
 
@@ -130,12 +140,13 @@
         .license { font-weight: 800; font-size: 0.85rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
-        /* --- 모바일 대응: 기존 세로 스택 방식 유지 --- */
+        /* --- 모바일 대응: 세로 스택 방식 --- */
         @media (max-width: 768px) {
-            body { overflow-y: auto; height: auto; display: block; }
-            .pc-header-wrapper { flex-direction: column; align-items: center; text-align: center; border: none; }
-            .header-left, .header-right { text-align: center; flex: none; width: 100%; }
-            .header-right { margin-top: 10px; }
+            body { overflow-y: auto; height: auto; display: block; padding: 15px 10px; }
+            .container { width: 100%; }
+            .pc-header-wrapper { grid-template-columns: 1fr; text-align: center; gap: 15px; background: none; border: none; padding: 0; }
+            .header-left, .header-right { text-align: center; }
+            .archive-select { max-width: 100%; }
             .img-mask { max-height: none; overflow: visible; }
             #mainImg { margin-bottom: 0; }
             .footer-area { flex-direction: column; gap: 5px; }
@@ -144,9 +155,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="security-header">사내 보안/복제 및 배포 금지</div>
+
         <header class="pc-header-wrapper">
             <div class="header-left">
-                <div class="security-header">사내 보안/복제 및 배포 금지</div>
                 <h1 class="main-title">DAILY MARKET BRIEFING</h1>
                 <div class="dept-badge">[롯데케미칼 첨단소재 구매부문]</div>
             </div>
