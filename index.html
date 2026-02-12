@@ -16,7 +16,6 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* 기본 설정: PC (스크롤 없이 한 화면 고정) */
         body {
             background-color: var(--bg-gray);
             display: flex;
@@ -24,29 +23,28 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 5px 10px; /* 여백 최소화 */
             overflow: hidden;
         }
 
+        /* 1. 컨테이너 가로폭을 거의 꽉 차게 확장 */
         .container {
-            width: 98%;
-            max-width: 1400px;
+            width: 100%;
+            max-width: 1600px; /* 기존 1400px에서 확장 */
             text-align: center;
         }
 
-        /* 상단 보안 강조 */
         .security-header {
             color: var(--security-red);
             font-weight: 900;
             font-size: 1.1rem;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             letter-spacing: 1px;
         }
 
         .dashboard-header { margin-bottom: 5px; }
         .main-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
         
-        /* 부서 정보 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
@@ -56,15 +54,15 @@
             padding: 4px 15px;
             border: 2px solid var(--main-black);
             box-shadow: 3px 3px 0px var(--main-black);
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
-        .notice-group { margin-bottom: 8px; }
+        .notice-group { margin-bottom: 5px; }
         .ai-notice { font-size: 0.95rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
         .typo-notice { font-size: 0.8rem; color: var(--text-gray); }
 
         .archive-select {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             padding: 4px;
             border: 2px solid var(--main-black);
             font-weight: bold;
@@ -73,7 +71,7 @@
             font-size: 0.85rem;
         }
 
-        /* 이미지 카드 영역 (확대 기능 제거됨) */
+        /* 2. 카드 영역 및 이미지 높이 대폭 확장 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
@@ -82,24 +80,24 @@
             position: relative;
         }
 
-        .img-display {
+        .img-mask {
             width: 100%;
-            max-height: 65vh; /* PC 화면에서 적절한 높이 유지 */
-            overflow: hidden;
+            max-height: 78vh; /* 기존 65vh에서 78vh로 확장하여 더 크게 보기 */
+            overflow: hidden; /* NotebookLM 하단 문구 커팅 */
+            position: relative;
+            background: #fafafa;
             display: flex;
             justify-content: center;
-            align-items: center;
-            background: #fafafa;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 65vh;
+            max-height: 83vh; /* 마스크보다 길게 설정하여 하단 가림 */
             object-fit: contain;
+            margin-bottom: -40px; /* NotebookLM 가리기용 마진 */
         }
 
-        /* 출처 고지 */
         .data-source {
             text-align: right;
             font-size: 0.75rem;
@@ -113,16 +111,15 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin-top: 12px;
+            margin-top: 8px;
         }
         .license { font-weight: 800; font-size: 0.85rem; }
         .copyright { font-size: 0.75rem; color: #999; }
 
-        /* 📱 모바일 환경 최적화 */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; padding: 20px 10px; display: block; }
-            .img-display { max-height: none; display: block; }
-            #mainImg { max-height: none; }
+            .img-mask { max-height: none; overflow: visible; }
+            #mainImg { max-height: none; margin-bottom: 0; }
             .footer-area { flex-direction: column; gap: 5px; }
             .data-source { text-align: center; }
         }
@@ -147,7 +144,7 @@
         </header>
         
         <main class="card">
-            <div class="img-display">
+            <div class="img-mask">
                 <img src="images/latest.webp" id="mainImg">
             </div>
             <div class="data-source">Source: Platts / ICIS Commentary (AI Summarized)</div>
@@ -160,7 +157,6 @@
     </div>
 
     <script>
-        // 아카이브 목록 불러오기
         fetch('images/list.json')
             .then(res => res.json())
             .then(data => {
@@ -173,7 +169,6 @@
                 });
             }).catch(() => {});
 
-        // 이미지 변경 및 캐시 방지
         function changeImage(src) {
             const img = document.getElementById('mainImg');
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
