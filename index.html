@@ -21,16 +21,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* 상단부터 채우기 */
             min-height: 100vh;
-            padding: 5px 10px;
-            overflow: hidden; /* PC 스크롤 방지 */
+            padding: 20px 10px;
+            /* 억지로 숨겼던 스크롤을 다시 허용합니다 */
+            overflow-y: auto; 
         }
 
-        /* 1. 컨테이너를 가로폭 98%까지 확장 */
+        /* 1. 프레임을 모바일처럼 적절한 크기로 제한 (최대 1000px) */
         .container {
-            width: 98%;
-            max-width: 1800px; 
+            width: 100%;
+            max-width: 1000px; 
             text-align: center;
         }
 
@@ -38,97 +38,85 @@
             color: var(--security-red);
             font-weight: 900;
             font-size: 1rem;
-            margin-top: 5px;
-            margin-bottom: 3px;
+            margin-bottom: 10px;
             letter-spacing: 1px;
         }
 
-        /* 헤더 여백 최소화하여 이미지 공간 확보 */
-        .dashboard-header { margin-bottom: 3px; }
-        .main-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 2px; }
+        .dashboard-header { margin-bottom: 15px; }
+        .main-title { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
         
+        /* 롯데케미칼 첨단소재 구매부문 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 0.9rem;
-            padding: 3px 12px;
+            font-size: 1rem;
+            padding: 6px 20px;
             border: 2px solid var(--main-black);
-            box-shadow: 2px 2px 0px var(--main-black);
-            margin-bottom: 5px;
+            box-shadow: 4px 4px 0px var(--main-black);
+            margin-bottom: 15px;
         }
 
-        .notice-group { margin-bottom: 5px; }
-        .ai-notice { font-size: 0.9rem; font-weight: 700; color: #d35400; margin-bottom: 1px; }
-        .typo-notice { font-size: 0.75rem; color: var(--text-gray); }
+        .notice-group { margin-bottom: 15px; }
+        .ai-notice { font-size: 0.95rem; font-weight: 700; color: #d35400; margin-bottom: 4px; }
+        .typo-notice { font-size: 0.8rem; color: var(--text-gray); }
 
         .archive-select {
-            margin-bottom: 5px;
-            padding: 3px;
+            margin-bottom: 20px;
+            padding: 6px;
             border: 2px solid var(--main-black);
             font-weight: bold;
             width: 100%;
-            max-width: 320px;
-            font-size: 0.8rem;
+            max-width: 400px;
+            font-size: 0.9rem;
         }
 
-        /* 2. 이미지 카드: 여백을 줄이고 높이 제한을 90%까지 해제 */
+        /* 2. 카드 영역: 스크롤 가능하도록 높이 제한 해제 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
-            padding: 5px;
+            padding: 15px;
             border-radius: 8px;
-            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
         }
 
+        /* NotebookLM 가리기용 마스크 */
         .img-mask {
             width: 100%;
-            height: 75vh; /* 화면 높이에 맞춰 유동적으로 조절 */
             overflow: hidden; 
             position: relative;
             background: #fafafa;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* 상단 고정 */
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 85vh; /* 마스크보다 길게 설정하여 하단 강제 커팅 */
-            object-fit: contain;
-            /* NotebookLM 문구가 약 40~50px 정도 차지하므로 더 과감하게 자름 */
-            margin-bottom: -55px; 
-            transform: translateY(0);
+            display: block;
+            /* 하단 문구를 가리기 위해 아래쪽을 살짝 잘라냅니다 */
+            margin-bottom: -45px; 
         }
 
         .data-source {
             text-align: right;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-gray);
-            margin-top: 3px;
-            padding-right: 5px;
+            margin-top: 50px; /* 잘린 마진만큼 여백 확보 */
             font-style: italic;
         }
 
         .footer-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-top: 5px;
+            text-align: center;
+            padding-bottom: 30px;
         }
-        .license { font-weight: 800; font-size: 0.8rem; }
-        .copyright { font-size: 0.7rem; color: #999; }
+        .license { font-weight: 800; font-size: 1rem; color: var(--main-black); margin-bottom: 5px; }
+        .copyright { font-size: 0.8rem; color: #999; }
 
-        /* 📱 모바일 최적화 (스크롤 허용 및 이미지 전체 보기) */
         @media (max-width: 768px) {
-            body { overflow-y: auto; height: auto; padding: 15px 5px; display: block; }
-            .img-mask { height: auto; max-height: none; overflow: visible; }
-            #mainImg { max-height: none; margin-bottom: 0; }
-            .footer-area { flex-direction: column; gap: 3px; }
-            .data-source { text-align: center; }
+            .main-title { font-size: 1.5rem; }
+            .dept-badge { font-size: 0.9rem; }
+            .license { font-size: 0.9rem; }
         }
     </style>
 </head>
