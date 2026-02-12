@@ -21,88 +21,94 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* 상단부터 채우기 */
             min-height: 100vh;
-            padding: 5px 10px; /* 여백 최소화 */
-            overflow: hidden;
+            padding: 5px 10px;
+            overflow: hidden; /* PC 스크롤 방지 */
         }
 
-        /* 1. 컨테이너 가로폭을 거의 꽉 차게 확장 */
+        /* 1. 컨테이너를 가로폭 98%까지 확장 */
         .container {
-            width: 100%;
-            max-width: 1600px; /* 기존 1400px에서 확장 */
+            width: 98%;
+            max-width: 1800px; 
             text-align: center;
         }
 
         .security-header {
             color: var(--security-red);
             font-weight: 900;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
+            font-size: 1rem;
+            margin-top: 5px;
+            margin-bottom: 3px;
             letter-spacing: 1px;
         }
 
-        .dashboard-header { margin-bottom: 5px; }
-        .main-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 5px; }
+        /* 헤더 여백 최소화하여 이미지 공간 확보 */
+        .dashboard-header { margin-bottom: 3px; }
+        .main-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 2px; }
         
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 0.95rem;
-            padding: 4px 15px;
+            font-size: 0.9rem;
+            padding: 3px 12px;
             border: 2px solid var(--main-black);
-            box-shadow: 3px 3px 0px var(--main-black);
+            box-shadow: 2px 2px 0px var(--main-black);
             margin-bottom: 5px;
         }
 
         .notice-group { margin-bottom: 5px; }
-        .ai-notice { font-size: 0.95rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
-        .typo-notice { font-size: 0.8rem; color: var(--text-gray); }
+        .ai-notice { font-size: 0.9rem; font-weight: 700; color: #d35400; margin-bottom: 1px; }
+        .typo-notice { font-size: 0.75rem; color: var(--text-gray); }
 
         .archive-select {
-            margin-bottom: 8px;
-            padding: 4px;
+            margin-bottom: 5px;
+            padding: 3px;
             border: 2px solid var(--main-black);
             font-weight: bold;
             width: 100%;
-            max-width: 350px;
-            font-size: 0.85rem;
+            max-width: 320px;
+            font-size: 0.8rem;
         }
 
-        /* 2. 카드 영역 및 이미지 높이 대폭 확장 */
+        /* 2. 이미지 카드: 여백을 줄이고 높이 제한을 90%까지 해제 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
-            padding: 10px;
+            padding: 5px;
             border-radius: 8px;
             position: relative;
         }
 
         .img-mask {
             width: 100%;
-            max-height: 78vh; /* 기존 65vh에서 78vh로 확장하여 더 크게 보기 */
-            overflow: hidden; /* NotebookLM 하단 문구 커팅 */
+            height: 75vh; /* 화면 높이에 맞춰 유동적으로 조절 */
+            overflow: hidden; 
             position: relative;
             background: #fafafa;
             display: flex;
             justify-content: center;
+            align-items: flex-start; /* 상단 고정 */
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            max-height: 83vh; /* 마스크보다 길게 설정하여 하단 가림 */
+            max-height: 85vh; /* 마스크보다 길게 설정하여 하단 강제 커팅 */
             object-fit: contain;
-            margin-bottom: -40px; /* NotebookLM 가리기용 마진 */
+            /* NotebookLM 문구가 약 40~50px 정도 차지하므로 더 과감하게 자름 */
+            margin-bottom: -55px; 
+            transform: translateY(0);
         }
 
         .data-source {
             text-align: right;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-gray);
-            margin-top: 5px;
+            margin-top: 3px;
+            padding-right: 5px;
             font-style: italic;
         }
 
@@ -111,16 +117,17 @@
             justify-content: center;
             align-items: center;
             gap: 15px;
-            margin-top: 8px;
+            margin-top: 5px;
         }
-        .license { font-weight: 800; font-size: 0.85rem; }
-        .copyright { font-size: 0.75rem; color: #999; }
+        .license { font-weight: 800; font-size: 0.8rem; }
+        .copyright { font-size: 0.7rem; color: #999; }
 
+        /* 📱 모바일 최적화 (스크롤 허용 및 이미지 전체 보기) */
         @media (max-width: 768px) {
-            body { overflow-y: auto; height: auto; padding: 20px 10px; display: block; }
-            .img-mask { max-height: none; overflow: visible; }
+            body { overflow-y: auto; height: auto; padding: 15px 5px; display: block; }
+            .img-mask { height: auto; max-height: none; overflow: visible; }
             #mainImg { max-height: none; margin-bottom: 0; }
-            .footer-area { flex-direction: column; gap: 5px; }
+            .footer-area { flex-direction: column; gap: 3px; }
             .data-source { text-align: center; }
         }
     </style>
