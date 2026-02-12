@@ -16,126 +16,150 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
+        /* PC 기본: 스크롤 없는 한 화면 고정 */
         body {
             background-color: var(--bg-gray);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px 10px;
-            /* 억지로 숨겼던 스크롤을 다시 허용합니다 */
-            overflow-y: auto; 
+            justify-content: flex-start;
+            height: 100vh;
+            padding: 10px;
+            overflow: hidden;
         }
 
-        /* 1. 프레임을 모바일처럼 적절한 크기로 제한 (최대 1000px) */
         .container {
-            width: 100%;
-            max-width: 1000px; 
-            text-align: center;
+            width: 98%;
+            max-width: 1600px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
+
+        /* --- PC 모드: 헤더 좌우 분할 구성 --- */
+        .pc-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 5px 15px;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .header-left { text-align: left; flex: 1; }
+        .header-right { text-align: right; flex: 1; }
 
         .security-header {
             color: var(--security-red);
             font-weight: 900;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
         }
 
-        .dashboard-header { margin-bottom: 15px; }
-        .main-title { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+        .main-title { font-size: 1.7rem; font-weight: 900; line-height: 1.2; }
         
-        /* 롯데케미칼 첨단소재 구매부문 배지 */
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 1rem;
-            padding: 6px 20px;
+            font-size: 0.9rem;
+            padding: 3px 12px;
             border: 2px solid var(--main-black);
-            box-shadow: 4px 4px 0px var(--main-black);
-            margin-bottom: 15px;
+            box-shadow: 2px 2px 0px var(--main-black);
+            margin-top: 5px;
         }
 
-        .notice-group { margin-bottom: 15px; }
-        .ai-notice { font-size: 0.95rem; font-weight: 700; color: #d35400; margin-bottom: 4px; }
-        .typo-notice { font-size: 0.8rem; color: var(--text-gray); }
+        .ai-notice { font-size: 0.85rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
+        .typo-notice { font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px; }
 
         .archive-select {
-            margin-bottom: 20px;
-            padding: 6px;
+            padding: 4px;
             border: 2px solid var(--main-black);
             font-weight: bold;
-            width: 100%;
-            max-width: 400px;
-            font-size: 0.9rem;
+            width: 280px;
+            font-size: 0.85rem;
         }
 
-        /* 2. 카드 영역: 스크롤 가능하도록 높이 제한 해제 */
+        /* --- 이미지 카드 영역 --- */
         .card {
             background: white;
             border: 2px solid var(--main-black);
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
+            flex: 1; /* 남은 공간 모두 사용 */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* NotebookLM 가리기용 마스크 */
         .img-mask {
-            width: 100%;
-            overflow: hidden; 
+            flex: 1;
+            overflow: hidden;
             position: relative;
             background: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
 
         #mainImg {
             width: 100%;
             height: auto;
-            display: block;
-            /* 하단 문구를 가리기 위해 아래쪽을 살짝 잘라냅니다 */
+            max-height: 100%;
+            object-fit: contain;
+            /* NotebookLM 문구 가리기 마진 */
             margin-bottom: -45px; 
         }
 
         .data-source {
             text-align: right;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-gray);
-            margin-top: 50px; /* 잘린 마진만큼 여백 확보 */
+            margin-top: 3px;
             font-style: italic;
         }
 
         .footer-area {
-            text-align: center;
-            padding-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 8px 0;
         }
-        .license { font-weight: 800; font-size: 1rem; color: var(--main-black); margin-bottom: 5px; }
-        .copyright { font-size: 0.8rem; color: #999; }
+        .license { font-weight: 800; font-size: 0.85rem; }
+        .copyright { font-size: 0.75rem; color: #999; }
 
+        /* --- 모바일 대응: 기존 세로 스택 방식 유지 --- */
         @media (max-width: 768px) {
-            .main-title { font-size: 1.5rem; }
-            .dept-badge { font-size: 0.9rem; }
-            .license { font-size: 0.9rem; }
+            body { overflow-y: auto; height: auto; display: block; }
+            .pc-header-wrapper { flex-direction: column; align-items: center; text-align: center; border: none; }
+            .header-left, .header-right { text-align: center; flex: none; width: 100%; }
+            .header-right { margin-top: 10px; }
+            .img-mask { max-height: none; overflow: visible; }
+            #mainImg { margin-bottom: 0; }
+            .footer-area { flex-direction: column; gap: 5px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="security-header">사내 보안/복제 및 배포 금지</div>
-
-        <header class="dashboard-header">
-            <h1 class="main-title">DAILY MARKET BRIEFING</h1>
-            <div class="dept-badge">[롯데케미칼 첨단소재 구매부문]</div>
-            
-            <div class="notice-group">
-                <p class="ai-notice">📢 이 데일리 시황은 AI를 학습시켜 작성 된 내용이나 검토 후에 게시됩니다.</p>
-                <p class="typo-notice">또한 본 페이지도 AI를 활용하여 제작되었기에 오타가 있을 수 있음을 사전 고지합니다.</p>
+        <header class="pc-header-wrapper">
+            <div class="header-left">
+                <div class="security-header">사내 보안/복제 및 배포 금지</div>
+                <h1 class="main-title">DAILY MARKET BRIEFING</h1>
+                <div class="dept-badge">[롯데케미칼 첨단소재 구매부문]</div>
             </div>
 
-            <select id="archiveDropdown" class="archive-select" onchange="changeImage(this.value)">
-                <option value="images/latest.webp">★ 최신 시황 보기 ★</option>
-            </select>
+            <div class="header-right">
+                <div class="notice-group">
+                    <p class="ai-notice">📢 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.</p>
+                    <p class="typo-notice">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
+                </div>
+                <select id="archiveDropdown" class="archive-select" onchange="changeImage(this.value)">
+                    <option value="images/latest.webp">★ 최신 시황 보기 ★</option>
+                </select>
+            </div>
         </header>
         
         <main class="card">
