@@ -16,150 +16,114 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* [PC 전용 고정 레이아웃] */
+        /* [PC 전용 설정] */
         body {
             background-color: var(--bg-gray);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* 상하 중앙 정렬 */
-            height: 100vh; /* 화면 높이에 맞춤 */
+            justify-content: center; /* 화면 정중앙 배치 */
+            height: 100vh;
             padding: 10px;
             overflow: hidden; /* PC 스크롤 방지 */
         }
 
         .container {
-            width: 100%;
-            max-width: 1200px; /* 4:3 비율에 적합한 가로폭 */
+            width: fit-content; /* 컨텐츠 크기에 맞게 너비 조절 */
+            max-width: 1200px;
+            height: auto;
+            max-height: 98vh; /* 화면 높이를 넘지 않도록 제한 */
             display: flex;
             flex-direction: column;
-            height: 98vh; /* 컨테이너가 화면 전체를 거의 다 쓰도록 설정 */
         }
 
-        /* 1열: 제목 단독 중앙 */
-        .title-row {
-            width: 100%;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .main-title { 
-            font-size: 2.2rem; 
-            font-weight: 900; 
-            letter-spacing: -1px;
-            color: var(--main-black);
-        }
+        /* 제목 (중앙 고정) */
+        .title-row { width: 100%; text-align: center; margin-bottom: 5px; }
+        .main-title { font-size: 2rem; font-weight: 900; letter-spacing: -1px; }
 
-        /* 2열: 3컬럼 가로 배치 (중앙으로 밀집) */
+        /* 3컬럼 헤더 (어카이브 중앙 배치) */
         .sub-header-row {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
             gap: 20px;
             align-items: center;
-            width: 100%;
-            padding: 8px 15px;
+            padding: 8px 20px;
             margin-bottom: 8px;
             background: rgba(255,255,255,0.7);
             border-radius: 10px;
             border: 1px solid #ddd;
         }
 
-        /* 좌측: 보안 및 부서 정보 */
         .header-left { text-align: right; }
-        .security-header {
-            color: var(--security-red);
-            font-weight: 900;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-        }
+        .security-header { color: var(--security-red); font-weight: 900; font-size: 0.85rem; margin-bottom: 2px; }
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             padding: 2px 10px;
             border: 2px solid var(--main-black);
             box-shadow: 2px 2px 0px var(--main-black);
         }
 
-        /* 중앙: 아카이브 (페이지의 가로/세로 모든 중심) */
-        .header-center {
-            display: flex;
-            justify-content: center;
-            min-width: 280px;
-        }
+        .header-center { display: flex; justify-content: center; min-width: 280px; }
         .archive-select {
-            padding: 5px;
-            border: 2px solid var(--main-black);
-            font-weight: bold;
-            width: 100%;
-            max-width: 260px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            text-align: center;
+            padding: 4px; border: 2px solid var(--main-black); font-weight: bold;
+            width: 100%; max-width: 260px; font-size: 0.85rem; cursor: pointer; text-align: center;
         }
 
-        /* 우측: 안내 문구 */
         .header-right { text-align: left; }
-        .ai-notice { font-size: 0.85rem; font-weight: 700; color: #d35400; margin-bottom: 1px; }
-        .typo-notice { font-size: 0.7rem; color: var(--text-gray); line-height: 1.2; }
+        .ai-notice { font-size: 0.8rem; font-weight: 700; color: #d35400; margin-bottom: 1px; }
+        .typo-notice { font-size: 0.7rem; color: var(--text-gray); }
 
-        /* 3열: 이미지 카드 영역 (남은 세로 공간 모두 사용) */
+        /* [핵심 수정] 이미지 크기에 맞춰 조여지는 카드 영역 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
             padding: 8px;
             border-radius: 8px;
-            flex: 1; /* 상단 높이를 제외한 모든 공간 차지 */
-            display: flex;
+            display: inline-flex; /* 내용물 크기에 맞게 박스가 줄어듦 */
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 0 auto;
         }
 
         .img-mask {
-            flex: 1;
-            overflow: hidden;
             position: relative;
             background: #fafafa;
+            overflow: hidden;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
         }
 
         #mainImg {
-            width: 100%;
-            height: 100%; /* 상자 안에 가득 채움 */
-            object-fit: contain; /* 비율 유지하며 꽉 채움 */
-            /* NotebookLM 워터마크 마스킹 */
-            margin-bottom: -48px; 
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 70vh; /* PC 화면 높이의 70%까지만 허용 (상하 공백 방지) */
+            object-fit: contain;
+            /* NotebookLM 문구 마스킹 */
+            margin-bottom: -45px; 
         }
 
-        /* 출처 정보 */
         .data-source {
-            text-align: right;
-            font-size: 0.65rem;
-            color: var(--text-gray);
-            margin-top: 2px;
-            font-style: italic;
+            text-align: right; font-size: 0.65rem; color: var(--text-gray);
+            margin-top: 2px; font-style: italic;
         }
 
-        .footer-area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            padding: 5px 0;
-        }
+        .footer-area { display: flex; justify-content: center; align-items: center; gap: 20px; padding: 5px 0; }
 
-        /* [모바일 대응: 세로 스크롤 방식 전환] */
+        /* [모바일 대응] */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; display: block; padding: 10px; }
-            .container { height: auto; }
+            .container { width: 100%; max-height: none; }
             .sub-header-row { display: flex; flex-direction: column; gap: 10px; background: none; border: none; padding: 0; }
             .header-left, .header-center, .header-right { text-align: center; width: 100%; min-width: 0; }
+            .card { display: flex; width: 100%; }
             .img-mask { overflow: visible; }
-            #mainImg { margin-bottom: 0; height: auto; }
+            #mainImg { margin-bottom: 0; max-height: none; width: 100%; }
         }
     </style>
 </head>
@@ -174,13 +138,11 @@
                 <div class="security-header">사내 보안/복제 및 배포 금지</div>
                 <div class="dept-badge">[롯데케미칼 첨단소재 구매부문]</div>
             </div>
-
             <div class="header-center">
                 <select id="archiveDropdown" class="archive-select" onchange="changeImage(this.value)">
                     <option value="images/latest.webp">★ 최신 시황 보기 ★</option>
                 </select>
             </div>
-
             <div class="header-right">
                 <p class="ai-notice">📢 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.</p>
                 <p class="typo-notice">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
@@ -210,7 +172,6 @@
                 dropdown.appendChild(opt);
             });
         });
-
         function changeImage(src) {
             const img = document.getElementById('mainImg');
             img.src = src + (src.includes('latest') ? "?t=" + new Date().getTime() : "");
