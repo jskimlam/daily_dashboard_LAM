@@ -16,77 +16,77 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Pretendard', sans-serif; }
 
-        /* [PC 전용: 스크롤 없는 전체 화면] */
+        /* [PC 전용: 16:9 와이드 원샷 레이아웃] */
         body {
             background-color: var(--bg-gray);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* 화면 높이에 딱 맞춤 */
-            padding: 5px;  /* 외부 여백 극소화 */
-            overflow: hidden; /* 스크롤 금지 */
+            height: 100vh;
+            padding: 10px;
+            overflow: hidden; /* PC 스크롤 방지 */
         }
 
         .container {
             width: 98%;
-            max-width: 1300px;
-            height: 98vh; /* 컨테이너가 화면의 거의 전체를 차지 */
+            max-width: 1500px; /* 와이드 비율을 위해 가로폭 확장 */
             display: flex;
             flex-direction: column;
+            height: 98vh;
         }
 
-        /* 1열: 제목 중앙 배치 */
-        .title-row { width: 100%; text-align: center; margin-bottom: 2px; }
-        .main-title { font-size: 1.8rem; font-weight: 900; letter-spacing: -1px; }
+        /* 1열: 제목 (중앙 단독) */
+        .title-row { width: 100%; text-align: center; margin-bottom: 5px; }
+        .main-title { font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; }
 
-        /* 2열: 3컬럼 헤더 (여백 대폭 축소) */
+        /* 2열: 3컬럼 대칭 헤더 (어카이브 중앙) */
         .sub-header-row {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 15px;
+            gap: 20px;
             align-items: center;
             width: 100%;
-            padding: 5px 15px;
-            margin-bottom: 5px;
+            padding: 8px 20px;
+            margin-bottom: 10px;
             background: rgba(255,255,255,0.8);
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid #ddd;
         }
 
         .header-left { text-align: right; }
-        .security-header { color: var(--security-red); font-weight: 900; font-size: 0.85rem; }
+        .security-header { color: var(--security-red); font-weight: 900; font-size: 0.95rem; margin-bottom: 3px; }
         .dept-badge {
             display: inline-block;
             background-color: var(--point-orange);
             color: var(--main-black);
             font-weight: 800;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border: 1.5px solid var(--main-black);
-            box-shadow: 1.5px 1.5px 0px var(--main-black);
+            font-size: 0.85rem;
+            padding: 3px 12px;
+            border: 2px solid var(--main-black);
+            box-shadow: 2px 2px 0px var(--main-black);
         }
 
-        .header-center { min-width: 250px; display: flex; justify-content: center; }
+        .header-center { display: flex; justify-content: center; min-width: 300px; }
         .archive-select {
-            padding: 3px; border: 1.5px solid var(--main-black); font-weight: bold;
-            width: 100%; max-width: 240px; font-size: 0.8rem; cursor: pointer; text-align: center;
+            padding: 5px; border: 2px solid var(--main-black); font-weight: bold;
+            width: 100%; max-width: 280px; font-size: 0.85rem; cursor: pointer; text-align: center;
         }
 
         .header-right { text-align: left; }
-        .ai-notice { font-size: 0.8rem; font-weight: 700; color: #d35400; }
-        .typo-notice { font-size: 0.65rem; color: var(--text-gray); }
+        .ai-notice { font-size: 0.85rem; font-weight: 700; color: #d35400; margin-bottom: 2px; }
+        .typo-notice { font-size: 0.75rem; color: var(--text-gray); }
 
-        /* [핵심] 3열: 메인 카드 영역 (비율에 맞춰 꽉 채움) */
+        /* [핵심] 3열: 16:9 최적화 카드 영역 */
         .card {
             background: white;
             border: 2px solid var(--main-black);
-            padding: 5px;
+            padding: 8px;
             border-radius: 8px;
-            flex: 1; /* 남은 모든 수직 공간을 사용 */
+            flex: 1; 
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* 내부 이미지 잘림 방지 */
+            overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
@@ -100,35 +100,31 @@
         }
 
         #mainImg {
-            max-width: 100%;
-            max-height: 100%; /* 상자의 높이를 넘지 않으면서 최대 크기 유지 */
-            width: auto;
-            height: auto;
-            object-fit: contain; /* 비율 유지하며 꽉 채움 */
-            margin-bottom: 0;    /* 내용 잘림 방지 */
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 16:9 비율을 유지하며 프레임에 꽉 채움 */
+            margin-bottom: 0;    /* 하단 잘림 방지 */
         }
 
-        /* 출처 정보 */
         .data-source {
-            text-align: right; font-size: 0.65rem; color: var(--text-gray);
-            padding: 3px 5px; font-style: italic;
+            text-align: right; font-size: 0.7rem; color: var(--text-gray);
+            padding: 5px 10px; font-style: italic;
         }
 
         .footer-area {
             display: flex; justify-content: center; align-items: center;
-            gap: 15px; padding: 5px 0;
+            gap: 20px; padding: 10px 0;
         }
-        .license { font-weight: 800; font-size: 0.8rem; }
-        .copyright { font-size: 0.7rem; color: #999; }
+        .license { font-weight: 800; font-size: 0.9rem; }
+        .copyright { font-size: 0.8rem; color: #999; }
 
-        /* [모바일 대응: 세로 스크롤 허용] */
+        /* 모바일 대응 (세로 스크롤 방식) */
         @media (max-width: 768px) {
             body { overflow-y: auto; height: auto; display: block; padding: 10px; }
             .container { height: auto; width: 100%; }
-            .sub-header-row { display: flex; flex-direction: column; gap: 10px; background: none; border: none; padding: 0; }
+            .sub-header-row { display: flex; flex-direction: column; gap: 15px; background: none; border: none; padding: 0; }
             .header-left, .header-center, .header-right { text-align: center; width: 100%; }
-            .card { flex: none; }
-            #mainImg { width: 100%; height: auto; }
+            #mainImg { height: auto; }
         }
     </style>
 </head>
@@ -151,8 +147,8 @@
             </div>
 
             <div class="header-right">
-                <p class="ai-notice">📢 이 데일리 시황은 AI 학습 후 검토된 내용입니다.</p>
-                <p class="typo-notice">노트북LM 제작으로 오타가 있을 수 있습니다.</p>
+                <p class="ai-notice">📢 이 데일리 시황은 AI를 학습시켜 작성 된 내용입니다.</p>
+                <p class="typo-notice">본 페이지는 노트북LM으로 제작되어 오타가 있을 수 있습니다.</p>
             </div>
         </header>
         
