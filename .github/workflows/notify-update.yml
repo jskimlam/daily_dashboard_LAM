@@ -1,0 +1,33 @@
+name: Market Briefing Update Notification
+
+on:
+  push:
+    paths:
+      - 'images/latest.webp' # 최신 시황 이미지가 바뀔 때만 작동
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send Mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # SMTP 서버 설정 (Gmail 기준)
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "[공지] 신규 시황 업데이트 완료 - 롯데케미칼 첨단소재"
+          to: ${{ secrets.MAIL_RECIPIENTS }}
+          from: "Market Dashboard Bot"
+          body: |
+            롯데케미칼 첨단소재 구매부문 데일리 시황이 업데이트되었습니다.
+            
+            아래 링크에서 최신 정보를 확인하세요:
+            https://jskimlam.github.io/
+            
+            * 본 메일은 시스템에 의해 자동으로 발송되었습니다.
+          priority: high
